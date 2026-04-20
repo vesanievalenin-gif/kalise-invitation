@@ -408,14 +408,16 @@
         <div id="page-rsvp" class="page">
             <h2 style="font-size: 3rem;">RSVP</h2>
             <div class="rsvp-form">
-                <form id="rsvpForm">
+                <!-- Hidden iframe to handle submission without CORS issues -->
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {showModal();}"></iframe>
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbxZTXV_p7b_nQg_QJ2H350U20j4s2fv_uMd5EV-xP4Mm6ftLmLliWmVi_EDym72t_o/exec" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
                     <div class="form-group">
                         <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" required placeholder="Your name">
+                        <input type="text" id="name" name="name" required placeholder="Your name" autocomplete="name">
                     </div>
                     <div class="form-group">
                         <label for="attendance">Will you attend?</label>
-                        <select id="attendance" name="attendance" required>
+                        <select id="attendance" name="attendance" required autocomplete="off">
                             <option value="">Select...</option>
                             <option value="Yes">Yes, I'll be there!</option>
                             <option value="No">Sorry, I can't make it</option>
@@ -423,15 +425,15 @@
                     </div>
                     <div class="form-group">
                         <label for="guests">Number of guests</label>
-                        <input type="number" id="guests" name="guests" min="1" value="1" required>
+                        <input type="number" id="guests" name="guests" min="1" value="1" required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="allergies">Food Allergies</label>
-                        <input type="text" id="allergies" name="allergies" placeholder="None or specify" required>
+                        <input type="text" id="allergies" name="allergies" placeholder="None or specify" required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="message">Message for Kalise</label>
-                        <textarea id="message" name="message" rows="3" placeholder="A sweet message..." required></textarea>
+                        <textarea id="message" name="message" rows="3" placeholder="A sweet message..." required autocomplete="off"></textarea>
                     </div>
                     <button type="submit" class="nav-btn" style="width: 100%;">Confirm Attendance</button>
                 </form>
@@ -469,49 +471,23 @@
         }
         setInterval(createPetal, 800);
 
+        let submitted = false;
         const rsvpForm = document.getElementById('rsvpForm');
         const overlay = document.getElementById('overlay');
         const confirmation = document.getElementById('confirmation');
 
         rsvpForm.addEventListener('submit', function(e) {
-            e.preventDefault();
             const submitBtn = rsvpForm.querySelector('button');
-            const originalText = submitBtn.innerText;
             submitBtn.disabled = true;
             submitBtn.innerText = 'Sending...';
-
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxD2z5ipvmVKb6BxjAZa1JPG_d9NAYUj7UVOXjfT3Kqto0qIkZ5EQLweqsQSumcczE-/exec';
             
-            // Use URLSearchParams for maximum compatibility with Google Apps Script
-            const formData = new FormData(rsvpForm);
-            const params = new URLSearchParams();
-            for (const pair of formData) {
-                params.append(pair[0], pair[1]);
-            }
-
-            fetch(scriptURL, { 
-                method: 'POST', 
-                mode: 'no-cors', // Required for Google Apps Script to avoid CORS issues
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString()
-            })
-            .then(() => {
-                // In no-cors mode, we won't get a readable response, but we assume success
-                showModal();
-                rsvpForm.reset();
+            // The actual submission is handled by the form target="hidden_iframe"
+            // We just need to reset the button after a short delay
+            setTimeout(() => {
                 submitBtn.disabled = false;
-                submitBtn.innerText = originalText;
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                // Fallback success since no-cors often triggers catch even if it works
-                showModal(); 
+                submitBtn.innerText = 'Confirm Attendance';
                 rsvpForm.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalText;
-            });
+            }, 2000);
         });
 
         function showModal() {
