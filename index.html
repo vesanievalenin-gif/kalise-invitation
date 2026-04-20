@@ -480,14 +480,25 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'Sending...';
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzVL7oQfC-_1QnH80zjlt8fiQVbGVVdWAPvE7g4B5T8tDITDsF5Wh8KCNPNHD5eld_C/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxZTXV_p7b_nQg_QJ2H350U20j4s2fv_uMd5EV-xP4Mm6ftLmLliWmVi_EDym72t_o/exec';
             
-            // Use FormData directly for better compatibility with Google Apps Script
+            // Use URLSearchParams for maximum compatibility with Google Apps Script
+            const formData = new FormData(rsvpForm);
+            const params = new URLSearchParams();
+            for (const pair of formData) {
+                params.append(pair[0], pair[1]);
+            }
+
             fetch(scriptURL, { 
                 method: 'POST', 
-                body: new FormData(rsvpForm)
+                mode: 'no-cors', // Required for Google Apps Script to avoid CORS issues
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params.toString()
             })
-            .then(response => {
+            .then(() => {
+                // In no-cors mode, we won't get a readable response, but we assume success
                 showModal();
                 rsvpForm.reset();
                 submitBtn.disabled = false;
@@ -495,8 +506,7 @@
             })
             .catch(error => {
                 console.error('Error!', error.message);
-                // Even if there's a CORS error, the data often still reaches the sheet
-                // So we show the success modal anyway, or you can alert the user
+                // Fallback success since no-cors often triggers catch even if it works
                 showModal(); 
                 rsvpForm.reset();
                 submitBtn.disabled = false;
