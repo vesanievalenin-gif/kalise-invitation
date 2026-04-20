@@ -358,15 +358,41 @@
 
         <!-- Page 6: Reminders -->
         <div id="page-reminders" class="page">
-            <h2 style="font-size: 3rem;">Reminder</h2>
-            <p style="font-size: 0.8rem; max-width: 280px; margin-bottom: 1rem;">We kindly request your understanding and cooperation with the following health protocols to protect our little one's developing immune system.</p>
-            <div style="text-align: left; font-size: 0.75rem; width: 100%; max-width: 280px;">
-                <p>🚫 No kissing Kalise</p>
-                <p>🚫 No smoking/vaping</p>
-                <p>🧼 Sanitize your hands</p>
-                <p>😷 Wear a face mask if unwell</p>
-                <p>🏊 Bring swimwear for pool fun!</p>
+            <h2 class="script-font" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 0.5rem;">Reminder</h2>
+            <p style="font-size: 0.8rem; max-width: 320px; margin-bottom: 2rem; line-height: 1.5;">We kindly request your understanding and cooperation with the following health protocols to protect our little one's developing immune system.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; max-width: 340px; margin-bottom: 2rem;">
+                <!-- No Kissing Card -->
+                <div style="background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--pastel-pink); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-color);">👶</div>
+                    <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-color);">No Kissing</p>
+                </div>
+                
+                <!-- No Smoking Card -->
+                <div style="background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--pastel-pink); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-color);">🚭</div>
+                    <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-color);">No Smoking</p>
+                </div>
+                
+                <!-- Sanitize Hands Card -->
+                <div style="background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--pastel-pink); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-color);">🧼</div>
+                    <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-color);">Sanitize Hands</p>
+                </div>
+                
+                <!-- Wear Mask Card -->
+                <div style="background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--pastel-pink); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-color);">😷</div>
+                    <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-color);">Wear Mask</p>
+                </div>
             </div>
+            
+            <!-- Swimwear Reminder (Full Width) -->
+            <div style="background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--pastel-pink); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: 100%; max-width: 340px; margin-bottom: 2rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-color);">🏊</div>
+                <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-color);">Bring Swimwear for Pool Fun!</p>
+            </div>
+            
             <button class="nav-btn" onclick="showPage('page-menu')">Back to Menu</button>
         </div>
 
