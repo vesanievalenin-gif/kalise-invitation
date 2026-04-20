@@ -13,6 +13,7 @@
             --cream: #fffaf0;
             --text-color: #5d4037;
             --accent-color: #f06292;
+            --gold: #d4af37;
         }
 
         * {
@@ -22,343 +23,413 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
+        body, html {
             height: 100%;
             width: 100%;
             font-family: 'Quicksand', sans-serif;
             background-color: var(--cream);
             color: var(--text-color);
-            overflow-x: hidden;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
+            overflow: hidden;
         }
 
-        h1, h2, .script-font {
+        h1, h2, h3, .script-font {
             font-family: 'Sacramento', cursive;
             color: var(--accent-color);
         }
 
-        /* Navigation */
-        nav {
-            position: fixed;
+        /* Page Container */
+        .page-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .page {
+            position: absolute;
             top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(255, 250, 240, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0.8rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Full Page Sections */
-        section {
-            height: 100vh;
-            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 2rem;
-            scroll-snap-align: start;
-            position: relative;
-            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: scale(0.95);
+            background-color: var(--cream);
+            z-index: 1;
+            overflow-y: auto;
         }
 
-        /* Hero Section */
-        #home {
-            background: radial-gradient(circle, #fff 0%, var(--pastel-pink) 100%);
-        }
-
-        .hero-content {
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
             z-index: 2;
-            animation: fadeIn 1.5s ease-out;
         }
 
-        .baby-photo {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 6px solid white;
-            box-shadow: 0 0 25px rgba(240, 98, 146, 0.3);
-            margin-bottom: 1.5rem;
-            animation: glow 3s infinite alternate;
-            object-fit: cover;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 0 15px rgba(240, 98, 146, 0.2); }
-            to { box-shadow: 0 0 35px rgba(240, 98, 146, 0.6); }
-        }
-
-        #home h1 { font-size: 2.8rem; margin-bottom: 0.5rem; }
-        #home p { font-size: 1.1rem; margin-bottom: 2rem; font-weight: 600; }
-
-        /* Theme Section */
-        #theme {
-            background-color: #fff;
-        }
-
-        .fairy-house {
-            width: 220px;
-            margin-bottom: 1.5rem;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Details Section */
-        #details {
-            background: linear-gradient(180deg, #fff 0%, var(--pastel-pink) 100%);
-        }
-
-        .details-container {
-            width: 100%;
-            max-width: 350px;
-        }
-
-        .details-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1.5rem;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--pastel-pink);
-        }
-
-        .details-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .details-card p {
-            font-size: 0.9rem;
-            margin-bottom: 0.2rem;
-        }
-
-        /* RSVP Section */
-        #rsvp {
-            background-color: #fff;
-            justify-content: flex-start;
-            padding-top: 5rem;
-            height: auto;
-            min-height: 100vh;
-        }
-
-        .rsvp-form {
-            width: 100%;
-            max-width: 350px;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            text-align: left;
-            border: 1px solid var(--pastel-pink);
-        }
-
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; font-weight: 600; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 0.7rem;
-            border: 1.5px solid var(--pastel-pink);
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .btn {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
-        }
-
-        /* Decorative Elements */
+        /* Background Decorations */
         .bg-decoration {
             position: absolute;
             pointer-events: none;
-            opacity: 0.4;
-            z-index: 1;
+            opacity: 0.25;
+            z-index: 0;
         }
 
         .top-left { top: -20px; left: -20px; width: 150px; transform: rotate(-15deg); }
         .bottom-right { bottom: -20px; right: -20px; width: 150px; transform: rotate(15deg); }
 
-        .floating-petal {
+        /* Buttons */
+        .nav-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+
+        .nav-btn:active { transform: scale(0.95); }
+
+        .menu-btn {
             position: fixed;
-            pointer-events: none;
-            z-index: 999;
-            animation: fall linear infinite;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            cursor: pointer;
+            border: none;
         }
 
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(360deg); }
+        /* Menu Page Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 2rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .menu-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--pastel-pink);
+            cursor: pointer;
+            transition: transform 0.2s;
         }
+
+        .menu-item:active { transform: scale(0.95); }
+        .menu-item i { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+
+        /* Pathway Animation */
+        .pathway-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 350px;
+            margin: 1rem 0;
+        }
+
+        .church-img { position: absolute; top: 0; left: 10px; width: 100px; }
+        .reception-img { position: absolute; bottom: 0; right: 10px; width: 120px; }
+        
+        .path-dots {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 200px;
+            height: 250px;
+            border: 3px dashed var(--soft-pink);
+            border-radius: 50% 50% 0 0;
+            border-top: none;
+            border-right: none;
+            z-index: 1;
+        }
+
+        .fairy-rider {
+            position: absolute;
+            width: 60px;
+            z-index: 5;
+            animation: ridePath 8s linear infinite;
+        }
+
+        @keyframes ridePath {
+            0% { top: 20px; left: 40px; transform: rotate(0deg); }
+            25% { top: 100px; left: 30px; transform: rotate(-10deg); }
+            50% { top: 200px; left: 80px; transform: rotate(10deg); }
+            75% { top: 250px; left: 180px; transform: rotate(0deg); }
+            100% { top: 20px; left: 40px; }
+        }
+
+        /* Godparents List */
+        .godparents-list {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 340px;
+            text-align: left;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .godparents-col { width: 48%; }
+        .godparents-col h4 { color: var(--accent-color); margin-bottom: 0.5rem; border-bottom: 1px solid var(--pastel-pink); }
+
+        /* Dress Code Colors */
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 1rem 0;
+        }
+
+        .color-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* RSVP Form */
+        .rsvp-form { width: 100%; max-width: 340px; text-align: left; }
+        .form-group { margin-bottom: 0.8rem; }
+        .form-group label { display: block; margin-bottom: 0.2rem; font-size: 0.8rem; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 0.6rem; border: 1.5px solid var(--pastel-pink); border-radius: 12px; font-family: inherit; font-size: 0.9rem; outline: none;
+        }
+
+        /* Floating Petals */
+        .floating-petal { position: fixed; pointer-events: none; z-index: 999; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
+
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .floating { animation: float 3s ease-in-out infinite; }
 
         /* Modal */
         #confirmation {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 2rem;
-            border-radius: 25px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.2);
-            z-index: 2000;
-            text-align: center;
-            width: 85%;
-            max-width: 320px;
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 2rem; border-radius: 25px; box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            z-index: 2000; text-align: center; width: 85%; max-width: 320px;
         }
-
         .overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(3px);
-            z-index: 1999;
-        }
-
-        /* Scroll Indicator */
-        .scroll-down {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            z-index: 2;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
-            40% {transform: translateY(-10px) translateX(-50%);}
-            60% {transform: translateY(-5px) translateX(-50%);}
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 1999;
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#theme">Theme</a>
-        <a href="#details">Details</a>
-        <a href="#rsvp">RSVP</a>
-    </nav>
+    <button class="menu-btn" onclick="showPage('page-menu')">☰</button>
 
-    <section id="home">
-        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/CPDJdYkqjbgvYukZ.png" class="bg-decoration top-left">
-        <div class="hero-content">
-            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/OwvHzSNlzPkhfXJv.png" alt="Kalise" class="baby-photo">
-            <h1>Hi my dearest visitors!</h1>
-            <p>I am Kalise</p>
-            <a href="#rsvp" class="btn" style="width: auto;">👉 RSVP Now</a>
+    <div class="page-container">
+        
+        <!-- Page 1: Hero -->
+        <div id="page-home" class="page active">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/CPDJdYkqjbgvYukZ.png" class="bg-decoration top-left">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Please join us as we celebrate the</h2>
+            <h1 style="font-size: 4rem; line-height: 1;">Christening</h1>
+            <p style="margin: 1rem 0;">Of</p>
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/OwvHzSNlzPkhfXJv.png" alt="Kalise" style="width: 180px; height: 180px; border-radius: 50%; border: 6px solid white; box-shadow: 0 0 20px rgba(0,0,0,0.1); object-fit: cover;">
+            <h2 style="font-size: 2.5rem; margin-top: 1rem;">Kastracia Jallixone</h2>
+            <button class="nav-btn" onclick="showPage('page-menu')">Enter Invitation ✨</button>
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/CPDJdYkqjbgvYukZ.png" class="bg-decoration bottom-right">
         </div>
-        <div class="scroll-down">↓</div>
-    </section>
 
-    <section id="theme">
-        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Magical Theme</h2>
-        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/yoOudIszqSdVrtPX.png" alt="Fairy House" class="fairy-house">
-        <p style="max-width: 280px; font-size: 0.95rem;">Step into a world of magic, flowers, and butterflies as we celebrate Kalise's special day.</p>
-        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/MDKcAmOVFDKLpugE.png" alt="Butterflies" style="width: 120px; margin-top: 1rem;">
-    </section>
-
-    <section id="details">
-        <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Event Details</h2>
-        <div class="details-container">
-            <div class="details-card">
-                <h3>Christening Ceremony</h3>
-                <p><strong>May 10, 2026 (Sunday)</strong></p>
-                <p>10:00 AM</p>
-                <p>St. Michael the Archangel Parish</p>
-                <p style="font-size: 0.8rem; color: #888;">Gen. Evangelista St., Poblacion, Bacoor City, Cavite</p>
+        <!-- Page 2: Menu (Main Hub) -->
+        <div id="page-menu" class="page">
+            <h2 style="font-size: 3rem;">Main Menu</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="showPage('page-event')">📍 Event Details</div>
+                <div class="menu-item" onclick="showPage('page-godparents')">👼 Godparents</div>
+                <div class="menu-item" onclick="showPage('page-dresscode')">👗 Dress Code</div>
+                <div class="menu-item" onclick="showPage('page-reminders')">📝 Reminders</div>
+                <div class="menu-item" onclick="showPage('page-gift')">🎁 Gift Ideas</div>
+                <div class="menu-item" onclick="showPage('page-rsvp')">💌 RSVP</div>
             </div>
-            <div class="details-card">
-                <h3>Reception</h3>
-                <p>12:00 NN</p>
-                <p>Antorina Private Pool & Events Place</p>
-                <p style="font-size: 0.8rem; color: #888;">Britsum St., Panapaan 2, Bacoor City, Cavite</p>
-            </div>
+            <button class="nav-btn" onclick="showPage('page-home')">Back to Cover</button>
         </div>
-    </section>
 
-    <section id="rsvp">
-        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">RSVP</h2>
-        <div class="rsvp-form">
-            <form id="rsvpForm">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required placeholder="Your name">
+        <!-- Page 3: Event Details (with Pathway Animation) -->
+        <div id="page-event" class="page">
+            <h2 style="font-size: 2.5rem;">May 10, 2026</h2>
+            <p style="font-weight: 600; letter-spacing: 2px;">SUNDAY</p>
+            
+            <div class="pathway-container">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/ZqEsyjBkSNXgDsuu.png" class="church-img">
+                <div class="path-dots"></div>
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/tJHZuovAsunXxBXg.png" class="fairy-rider">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/pgkZmQXBhqRuoRFb.png" class="reception-img">
+                
+                <div style="position: absolute; top: 100px; right: 10px; text-align: right; width: 180px;">
+                    <h3 style="font-size: 1.8rem;">Church</h3>
+                    <p style="font-size: 0.7rem;">St. Michael the Archangel Parish</p>
+                    <p style="font-size: 0.7rem;">10:00 A.M.</p>
                 </div>
-                <div class="form-group">
-                    <label for="attendance">Will you attend?</label>
-                    <select id="attendance" name="attendance" required>
-                        <option value="">Select...</option>
-                        <option value="Yes">Yes, I'll be there!</option>
-                        <option value="No">Sorry, I can't make it</option>
-                    </select>
+                
+                <div style="position: absolute; bottom: 100px; left: 10px; text-align: left; width: 180px;">
+                    <h3 style="font-size: 1.8rem;">Reception</h3>
+                    <p style="font-size: 0.7rem;">Antorina Private Pool & Events Place</p>
+                    <p style="font-size: 0.7rem;">12:00 NN</p>
                 </div>
-                <div class="form-group">
-                    <label for="guests">Number of guests</label>
-                    <input type="number" id="guests" name="guests" min="1" value="1">
-                </div>
-                <div class="form-group">
-                    <label for="allergies">Food Allergies</label>
-                    <input type="text" id="allergies" name="allergies" placeholder="None or specify">
-                </div>
-                <div class="form-group">
-                    <label for="message">Message for Kalise</label>
-                    <textarea id="message" name="message" rows="3" placeholder="A sweet message..."></textarea>
-                </div>
-                <button type="submit" class="btn">Confirm Attendance</button>
-            </form>
+            </div>
+            <button class="nav-btn" onclick="showPage('page-menu')">Back to Menu</button>
         </div>
-        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/CPDJdYkqjbgvYukZ.png" class="bg-decoration bottom-right">
-    </section>
+
+        <!-- Page 4: Godparents -->
+        <div id="page-godparents" class="page">
+            <h2 style="font-size: 3rem;">The Godparents</h2>
+            <div class="godparents-list">
+                <div class="godparents-col">
+                    <h4>Godfather</h4>
+                    <p>Paul Adrian Maguago</p>
+                    <p>Joselle Colfey</p>
+                    <p>Hayden Bueno</p>
+                    <p>Sebastian Caran Jr.</p>
+                    <p>Aljo Lacaba</p>
+                    <p>Bryan Lacia</p>
+                    <p>Melvin Miclat</p>
+                    <p>Ariel Montero</p>
+                    <p>Oasis Daniel Nabua</p>
+                    <p>Jerry Roy Pelce</p>
+                    <p>Rymar Rodriguez</p>
+                    <p>John Michael Tan</p>
+                    <p>Randy Terrazas</p>
+                    <p>Jomarie Tagano</p>
+                </div>
+                <div class="godparents-col">
+                    <h4>Godmother</h4>
+                    <p>Lorraine Dimple Victoriano</p>
+                    <p>Michaella Jhay Alajado</p>
+                    <p>Ray-ann Bartcog</p>
+                    <p>Vesanie Marie Bernal</p>
+                    <p>Melissa Fernando</p>
+                    <p>Joni Malazarte</p>
+                    <p>Genevieve Rose Mayot</p>
+                    <p>Marlenel Pelar</p>
+                    <p>Kimberly Laurence Regis</p>
+                    <p>Marianne Solas</p>
+                    <p>Erlyn Tacza</p>
+                    <p>Kyle Tajora</p>
+                    <p>Jazzullyn Velasquez</p>
+                    <p>Roxette Algarme</p>
+                </div>
+            </div>
+            <button class="nav-btn" onclick="showPage('page-menu')">Back to Menu</button>
+        </div>
+
+        <!-- Page 5: Dress Code -->
+        <div id="page-dresscode" class="page">
+            <h2 style="font-size: 3rem;">Dress Code</h2>
+            <p style="font-size: 0.9rem; max-width: 280px;">You may wear any casual clothes with the shades of beige, brown, and nude pink (any pastel color).</p>
+            <div class="color-palette">
+                <div class="color-circle" style="background-color: #d2b48c;"></div>
+                <div class="color-circle" style="background-color: #bc8f8f;"></div>
+                <div class="color-circle" style="background-color: #f5f5dc;"></div>
+                <div class="color-circle" style="background-color: #ffb6c1;"></div>
+            </div>
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/MDKcAmOVFDKLpugE.png" style="width: 100px;" class="floating">
+            <button class="nav-btn" onclick="showPage('page-menu')">Back to Menu</button>
+        </div>
+
+        <!-- Page 6: Reminders -->
+        <div id="page-reminders" class="page">
+            <h2 style="font-size: 3rem;">Reminder</h2>
+            <p style="font-size: 0.8rem; max-width: 280px; margin-bottom: 1rem;">We kindly request your understanding and cooperation with the following health protocols to protect our little one's developing immune system.</p>
+            <div style="text-align: left; font-size: 0.75rem; width: 100%; max-width: 280px;">
+                <p>🚫 No kissing Kalise</p>
+                <p>🚫 No smoking/vaping</p>
+                <p>🧼 Sanitize your hands</p>
+                <p>😷 Wear a face mask if unwell</p>
+                <p>🏊 Bring swimwear for pool fun!</p>
+            </div>
+            <button class="nav-btn" onclick="showPage('page-menu')">Back to Menu</button>
+        </div>
+
+        <!-- Page 7: Gift Ideas -->
+        <div id="page-gift" class="page">
+            <h2 style="font-size: 3rem;">Gift Idea</h2>
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663577904468/exjMlfzJzbHCVXvp.png" style="width: 150px; margin-bottom: 1rem;" class="floating">
+            <p style="font-size: 0.85rem; max-width: 280px;">With all that we have, we've been truly blessed, your presence and prayers are all that we request. But if you desire to give nonetheless, any will do.</p>
+            <button class="nav-btn" onclick="showPage('page-menu')">Back to Menu</button>
+        </div>
+
+        <!-- Page 8: RSVP -->
+        <div id="page-rsvp" class="page">
+            <h2 style="font-size: 3rem;">RSVP</h2>
+            <div class="rsvp-form">
+                <form id="rsvpForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="attendance">Will you attend?</label>
+                        <select id="attendance" name="attendance" required>
+                            <option value="">Select...</option>
+                            <option value="Yes">Yes, I'll be there!</option>
+                            <option value="No">Sorry, I can't make it</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Number of guests</label>
+                        <input type="number" id="guests" name="guests" min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="allergies">Food Allergies</label>
+                        <input type="text" id="allergies" name="allergies" placeholder="None or specify">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message for Kalise</label>
+                        <textarea id="message" name="message" rows="3" placeholder="A sweet message..."></textarea>
+                    </div>
+                    <button type="submit" class="nav-btn" style="width: 100%;">Confirm Attendance</button>
+                </form>
+            </div>
+            <button class="nav-btn" style="background: none; color: var(--accent-color); box-shadow: none;" onclick="showPage('page-menu')">Cancel</button>
+        </div>
+
+    </div>
 
     <div class="overlay" id="overlay"></div>
     <div id="confirmation">
-        <h2 class="script-font" style="font-size: 2.2rem;">Thank you!</h2>
-        <p style="font-size: 0.9rem;">See you at Kalise’s special day 💕</p>
+        <h2 class="script-font" style="font-size: 2.5rem;">Thank you!</h2>
+        <p>See you at Kalise’s special day 💕</p>
         <br>
-        <button class="btn" onclick="closeModal()">Close</button>
+        <button class="nav-btn" onclick="closeModal()">Close</button>
     </div>
 
     <script>
-        // Floating Petals
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
         function createPetal() {
             const petal = document.createElement('div');
             petal.className = 'floating-petal';
@@ -372,7 +443,6 @@
         }
         setInterval(createPetal, 800);
 
-        // Form Submission
         const rsvpForm = document.getElementById('rsvpForm');
         const overlay = document.getElementById('overlay');
         const confirmation = document.getElementById('confirmation');
@@ -387,7 +457,6 @@
             const data = {};
             formData.forEach((value, key) => data[key] = value);
 
-            // Replace with your Google Apps Script Web App URL
             const scriptURL = 'https://script.google.com/macros/s/AKfycbxZTXV_p7b_nQg_QJ2H350U20j4s2fv_uMd5EV-xP4Mm6ftLmLliWmVi_EDym72t_o/exec';
 
             fetch(scriptURL, {
@@ -419,6 +488,7 @@
         function closeModal() {
             overlay.style.display = 'none';
             confirmation.style.display = 'none';
+            showPage('page-home');
         }
     </script>
 </body>
